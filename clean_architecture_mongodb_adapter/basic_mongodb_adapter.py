@@ -116,6 +116,7 @@ class BasicMongodbAdapter:
         item = self.get_by_id(item_id)
         if not item:
             raise NotExistsException(f"Item {item_id} does not exist.")
+        return True
 
     def save(self, json_data):
         cleaned_data = BasicMongodbAdapter._normalize_nodes(json_data)
