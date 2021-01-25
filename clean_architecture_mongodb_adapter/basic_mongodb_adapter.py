@@ -39,21 +39,20 @@ class BasicMongodbAdapter:
         return self._class.__name__
 
     def _get_client(self):
-        connection_string = self.db_url.format(username=self.db_username, password=self.db_password)
-        self.logger.debug(f'connection_string: {connection_string}')
+        connection_string = self.db_url.format(username=self.db_username,
+                                               password=self.db_password)
         return MongoClient(connection_string, ssl_cert_reqs=ssl.CERT_NONE)
 
     def _get_db(self):
         client = self._get_client()
-        self.logger.debug(f'db_name: {self.db_name}')
         return client[self.db_name]
 
     def _get_table(self):
-        self.logger.debug(f'table_name: {self.table_name}')
         return self._db[self.table_name]
 
     def _instantiate_object(self, x):
-        self.logger.debug(f'BasicMongodbAdapter._instantiate_object -> x: {str(x)}')
+        self.logger.debug(
+            f'BasicMongodbAdapter._instantiate_object -> x: {str(x)}')
         obj = self._class.from_json(x)
         obj.set_adapter(self)
         return obj
@@ -122,7 +121,8 @@ class BasicMongodbAdapter:
         cleaned_data = BasicMongodbAdapter._normalize_nodes(json_data)
         update_filter = {'_id': json_data.get('_id')}
         update_query = {'$set': cleaned_data}
-        update_result = self._table.update_one(update_filter, update_query, upsert=True)
+        update_result = self._table.update_one(
+            update_filter, update_query, upsert=True)
         return update_result.upserted_id
 
     def delete(self, item_id):
@@ -136,12 +136,16 @@ class BasicMongodbAdapter:
         query_result = self._table.find(filters)
         self.logger.info(f'query_result: {query_result}')
 
-        #objects = [self._instantiate_object(x) for x in query_result]
         objects = list()
+        print('query_result: ' + str(query_result))
+        print('Vou entrar no loop')
         for item in query_result:
+            print('Passando pelo loop')
+            print('item of query_result: ' + str(item))
             object = self._instantiate_object(item)
             self.logger.info(f'Object mounted: {object}')
             objects.append(object)
+        print('O lugar depois do loop')
         self.logger.debug(f'I got {str(len(objects))} objects')
         return objects
 
@@ -157,12 +161,14 @@ class BasicMongodbAdapter:
         key_name = key_array[0]
         filter_params = key_array[1:]
         if len(filter_params) > 1:
-            return key_name, self._process_filter_multiple(filter_params, values)
-        return key_name, self._process_filter_single(filter_params, values)
+            return key_name, self._process_filter_multiple(
+                filter_params, values)
+        return key_name, self._process_filter_single(
+            filter_params, values)
 
     @staticmethod
     def _process_filter_single(filter_params, values):
-        return { f'${filter_params[0]}': values }
+        return {f'${filter_params[0]}': values}
 
     @staticmethod
     def _process_filter_multiple(filter_params, values):

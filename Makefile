@@ -56,7 +56,7 @@ clean-test: ## remove test and coverage artifacts
 
 
 tests: ## test and lint
-	python3 -m pytest -v --cov=tests --cov=clean_architecture_mongodb_adapter -W ignore::DeprecationWarning --cov-report term-missing:skip-covered
+	python3 -m pytest -v --cov=tests --cov=clean_architecture_mongodb_adapter --cov-report term-missing:skip-covered
 	@echo "Linting..."
 	@flake8 clean_architecture_mongodb_adapter/ --max-complexity=5
 	@flake8 tests/ --ignore=S101,S311,F811
@@ -80,14 +80,13 @@ install_dev: install ## install packages listed on requirements_dev.txt
 
 
 install: clean ## install the package to the active Python's site-packages
-	pip install devpi-client
-	devpi use $(DEVPI_URL) --always-set-cfg=yes
+	#pip install devpi-client
+	#devpi use $(DEVPI_URL) --always-set-cfg=yes
 	pip install -e .
 
 
 upload: clean ## publish to devpi
-	pip install devpi-client
-	devpi use $(DEVPI_URL) --always-set-cfg=yes
-	devpi login $(DEVPI_USER) --password=$(DEVPI_PASSWORD)
-	python setup.py bdist_wheel
-	devpi upload --from-dir dist/
+	pip install --upgrade setuptools wheel
+	python setup.py sdist bdist_wheel
+	pip install --upgrade twine
+	python -m twine upload dist/*
