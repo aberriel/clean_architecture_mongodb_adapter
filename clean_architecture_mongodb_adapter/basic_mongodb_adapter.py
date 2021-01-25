@@ -137,15 +137,11 @@ class BasicMongodbAdapter:
         self.logger.info(f'query_result: {query_result}')
 
         objects = list()
-        print('query_result: ' + str(query_result))
-        print('Vou entrar no loop')
         for item in query_result:
-            print('Passando pelo loop')
-            print('item of query_result: ' + str(item))
             object = self._instantiate_object(item)
             self.logger.info(f'Object mounted: {object}')
             objects.append(object)
-        print('O lugar depois do loop')
+
         self.logger.debug(f'I got {str(len(objects))} objects')
         return objects
 
