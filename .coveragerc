@@ -1,0 +1,9 @@
+[run]
+
+[report]
+skip_covered = True
+show_missing = True
+exclude_lines =
+    pragma: no cover
+    @abstract
+    raise NotImplementedError
