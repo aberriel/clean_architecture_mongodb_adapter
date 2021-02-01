@@ -1,5 +1,5 @@
 requirements = [
-    'bumpversion==0.5.3',
+    'bumpversion==0.6.0',
     'dnspython==2.0.0',
     'itsdangerous==1.1.0',
     'pymongo==3.11.0',
