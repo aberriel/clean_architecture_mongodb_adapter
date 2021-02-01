@@ -12,7 +12,7 @@ with open('HISTORY.rst') as history_file:
 
 setup(
     name='clean_architecture_mongodb_adapter',
-    version='0.1.0',
+    version='0.1.1',
     author="Anselmo Lira (https://github.com/aberriel)",
     author_email="anselmo.lira1@gmail.com",
     description="Concrete implementation of adapter to MongoDB",
@@ -23,7 +23,7 @@ setup(
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     entry_points={
         'console_scripts': [

@@ -4,5 +4,5 @@ from clean_architecture_mongodb_adapter.basic_mongodb_adapter import (
     NotExistsException)
 
 __author__ = """Anselmo Lira"""
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __all__ = ['BasicMongodbAdapter', 'NotExistsException']
