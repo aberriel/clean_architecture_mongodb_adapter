@@ -1,6 +1,4 @@
-from clean_architecture_mongodb_adapter.basic_mongodb_adapter import (
-    BasicMongodbAdapter,
-    NotExistsException)
+from clean_architecture_mongodb_adapter.basic_mongodb_adapter import (BasicMongodbAdapter, NotExistsException)
 from collections import namedtuple
 from pytest import fixture, raises
 from unittest import TestCase
@@ -50,9 +48,7 @@ def test_mongodb_adapter(mock_logging, mock_get_table, mock_get_db):
 @patch.object(BasicMongodbAdapter, '_get_db')
 @patch.object(BasicMongodbAdapter, '_get_table')
 @patch(f'{prefix}.logging')
-def test_mogodb_adapter__logger_none(mock_logging,
-                                     mock_get_table,
-                                     mock_get_db):
+def test_mogodb_adapter__logger_none(mock_logging, mock_get_table, mock_get_db):
     mock_table_name = MagicMock()
     mock_db_name = MagicMock()
     mock_db_url = MagicMock()
@@ -94,16 +90,9 @@ def adapter_fixture(request):
                 db_password: str = MagicMock(),
                 adapted_class=MagicMock(),
                 logger=MagicMock()):
-        adapter = BasicMongodbAdapter(
-            table_name=table_name,
-            db_name=db_name,
-            db_url=db_url,
-            db_username=db_username,
-            db_password=db_password,
-            adapted_class=adapted_class,
-            logger=logger)
-        return Factory(adapter, table_name, db_name, db_url,
-                       db_username, db_password, adapted_class, logger)
+        adapter = BasicMongodbAdapter(table_name=table_name, db_name=db_name, db_url=db_url, db_username=db_username,
+                                      db_password=db_password, adapted_class=adapted_class, logger=logger)
+        return Factory(adapter, table_name, db_name, db_url, db_username, db_password, adapted_class, logger)
     request.cls.factory = factory
 
 
@@ -160,11 +149,8 @@ class TestBasicMongodbAdapter(TestCase):
     @patch(f'{prefix}.MongoClient')
     def test__get_client(self, mock_mongo_client):
         client = self.adapter._get_client()
-        self.mock_db_url.format.assert_called_with(
-            username=self.mock_db_username,
-            password=self.mock_db_password)
-        mock_mongo_client.assert_called_with(
-            self.mock_db_url.format(), ssl_cert_reqs=ssl.CERT_NONE)
+        self.mock_db_url.format.assert_called_with(username=self.mock_db_username, password=self.mock_db_password)
+        mock_mongo_client.assert_called_with(self.mock_db_url.format(), ssl_cert_reqs=ssl.CERT_NONE)
         assert client == mock_mongo_client()
 
     @patch.object(BasicMongodbAdapter, '_get_client')
@@ -215,9 +201,7 @@ class TestBasicMongodbAdapter(TestCase):
     @patch.object(BasicMongodbAdapter, '_clean_set_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_list_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_dict_empty_elements')
-    def test__normalize_nodes__set(self, mock_clean_dict,
-                                   mock_clean_list,
-                                   mock_clean_set):
+    def test__normalize_nodes__set(self, mock_clean_dict, mock_clean_list, mock_clean_set):
         mock_arg: set = set()
         result = self.adapter._normalize_nodes(mock_arg)
 
@@ -229,9 +213,7 @@ class TestBasicMongodbAdapter(TestCase):
     @patch.object(BasicMongodbAdapter, '_clean_set_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_list_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_dict_empty_elements')
-    def test__normalize_nodes__dict(self, mock_clean_dict,
-                                    mock_clean_list,
-                                    mock_clean_set):
+    def test__normalize_nodes__dict(self, mock_clean_dict, mock_clean_list, mock_clean_set):
         mock_arg: dict = dict()
         result = self.adapter._normalize_nodes(mock_arg)
 
@@ -243,9 +225,7 @@ class TestBasicMongodbAdapter(TestCase):
     @patch.object(BasicMongodbAdapter, '_clean_set_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_list_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_dict_empty_elements')
-    def test__normalize_nodes__list(self, mock_clean_dict,
-                                    mock_clean_list,
-                                    mock_clean_set):
+    def test__normalize_nodes__list(self, mock_clean_dict, mock_clean_list, mock_clean_set):
         mock_arg: list = list()
         result = self.adapter._normalize_nodes(mock_arg)
 
@@ -257,9 +237,7 @@ class TestBasicMongodbAdapter(TestCase):
     @patch.object(BasicMongodbAdapter, '_clean_set_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_list_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_dict_empty_elements')
-    def test__normalize_nodes__not_on_cleaners(self, mock_clean_dict,
-                                               mock_clean_list,
-                                               mock_clean_set):
+    def test__normalize_nodes__not_on_cleaners(self, mock_clean_dict, mock_clean_list, mock_clean_set):
         mock_arg: str = 'Anselmo'
         result = self.adapter._normalize_nodes(mock_arg)
 
@@ -271,10 +249,7 @@ class TestBasicMongodbAdapter(TestCase):
     @patch.object(BasicMongodbAdapter, '_clean_set_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_list_empty_elements')
     @patch.object(BasicMongodbAdapter, '_clean_dict_empty_elements')
-    def test__normalize_nodes__not_on_cleaners__none(self,
-                                                     mock_clean_dict,
-                                                     mock_clean_list,
-                                                     mock_clean_set):
+    def test__normalize_nodes__not_on_cleaners__none(self, mock_clean_dict, mock_clean_list, mock_clean_set):
         mock_arg = None
         result = self.adapter._normalize_nodes(mock_arg)
 
@@ -306,8 +281,7 @@ class TestBasicMongodbAdapter(TestCase):
 
     @patch.object(BasicMongodbAdapter, '_get_item_from_table')
     @patch.object(BasicMongodbAdapter, '_instantiate_object')
-    def test_get_by_id(self, mock_instantiate_object,
-                       mock_get_item_from_table):
+    def test_get_by_id(self, mock_instantiate_object, mock_get_item_from_table):
         mock_item_id = MagicMock()
         result = self.adapter.get_by_id(mock_item_id)
 
@@ -319,8 +293,7 @@ class TestBasicMongodbAdapter(TestCase):
                   '_get_item_from_table',
                   return_value=None)
     @patch.object(BasicMongodbAdapter, '_instantiate_object')
-    def test_get_by_id__none(self, mock_instantiate_object,
-                             mock_get_item_from_table):
+    def test_get_by_id__none(self, mock_instantiate_object, mock_get_item_from_table):
         mock_item_id = MagicMock()
         result = self.adapter.get_by_id(mock_item_id)
 
@@ -384,8 +357,7 @@ class TestBasicMongodbAdapter(TestCase):
         mock_instantiate_object.assert_called()
         assert result == [mock_instantiate_object()]
 
-    @patch.object(BasicMongodbAdapter, '_process_filter',
-                  return_value=make_function_return_set())
+    @patch.object(BasicMongodbAdapter, '_process_filter', return_value=make_function_return_set())
     def test__process_filters(self, mock_process_filter):
         mock_args = {'age': 34}
         result = self.adapter._process_filters(mock_args)
@@ -394,12 +366,10 @@ class TestBasicMongodbAdapter(TestCase):
 
     @patch.object(BasicMongodbAdapter, '_process_filter_multiple')
     @patch.object(BasicMongodbAdapter, '_process_filter_single')
-    def test__process_filter_single(self, mock_process_filter_single,
-                                    mock_process_filter_multiple):
+    def test__process_filter_single(self, mock_process_filter_single, mock_process_filter_multiple):
         mock_keys = 'anselmo__ana'
         mock_values = MagicMock()
-        result_name, result_value = \
-            self.adapter._process_filter(mock_keys, mock_values)
+        result_name, result_value = self.adapter._process_filter(mock_keys, mock_values)
 
         mock_keys.split.assert_called_with('__')
         mock_process_filter_multiple.assert_not_called()
@@ -409,16 +379,13 @@ class TestBasicMongodbAdapter(TestCase):
 
     @patch.object(BasicMongodbAdapter, '_process_filter_multiple')
     @patch.object(BasicMongodbAdapter, '_process_filter_single')
-    def test__process_filter_multiple(self, mock_process_filter_single,
-                                      mock_process_filter_multiple):
+    def test__process_filter_multiple(self, mock_process_filter_single, mock_process_filter_multiple):
         mock_keys = 'anselmo__marcos__jose__maria__ana__camilla'
         mock_values = MagicMock()
-        result_name, result_value = \
-            self.adapter._process_filter(mock_keys, mock_values)
+        result_name, result_value = self.adapter._process_filter(mock_keys, mock_values)
 
         mock_keys.split.assert_called_with('__')
-        mock_process_filter_multiple.assert_called_with(
-            ['marcos', 'jose', 'maria', 'ana', 'camilla'], mock_values)
+        mock_process_filter_multiple.assert_called_with(['marcos', 'jose', 'maria', 'ana', 'camilla'], mock_values)
         mock_process_filter_single.assert_not_called()
         assert result_name == 'anselmo'
         assert result_value == mock_process_filter_multiple()
@@ -426,15 +393,13 @@ class TestBasicMongodbAdapter(TestCase):
     def test__process_filter_single(self):
         mock_filter_params = ['Anselmo', 'Marcos']
         mock_values = MagicMock()
-        result = self.adapter._process_filter_single(
-            mock_filter_params, mock_values)
+        result = self.adapter._process_filter_single(mock_filter_params, mock_values)
         assert result == {'$Anselmo': mock_values}
 
     def test__process_filter_multiple(self):
         mock_filter_params = ['Anselmo', 'Marcos']
         mock_values = [34, 29]
-        result = self.adapter._process_filter_multiple(
-            mock_filter_params, mock_values)
+        result = self.adapter._process_filter_multiple(mock_filter_params, mock_values)
         assert result == {
             'Anselmo': 34,
             'Marcos': 29}
